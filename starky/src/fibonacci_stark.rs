@@ -172,6 +172,7 @@ mod tests {
 
         let stark = S::new(num_rows);
         let trace = stark.generate_trace(public_inputs[0], public_inputs[1]);
+        let start_time = std::time::Instant::now();
         let proof = prove::<F, C, S, D>(
             stark,
             &config,
@@ -179,6 +180,10 @@ mod tests {
             &public_inputs,
             &mut TimingTree::default(),
         )?;
+        let duration_ms = start_time.elapsed().as_millis();
+        println!("demo proved in {}ms", duration_ms);
+
+        println!("proof size: {} bytes", bincode::serialize(&proof).unwrap().len());
 
         verify_stark_proof(stark, proof, &config)
     }

@@ -25,8 +25,10 @@ use plonky2_maybe_rayon::*;
 use crate::config::StarkConfig;
 use crate::lookup::GrandProductChallengeSet;
 
+use serde::{Deserialize, Serialize};
+
 /// Merkle caps and openings that form the proof of a single STARK.
-#[derive(Debug, Clone)]
+#[derive(Serialize, Debug, Clone)]
 pub struct StarkProof<F: RichField + Extendable<D>, C: GenericConfig<D, F = F>, const D: usize> {
     /// Merkle cap of LDEs of trace values.
     pub trace_cap: MerkleCap<F, C::Hasher>,
@@ -122,7 +124,7 @@ impl<const D: usize> StarkProofTarget<D> {
 }
 
 /// Merkle caps and openings that form the proof of a single STARK, along with its public inputs.
-#[derive(Debug, Clone)]
+#[derive(Serialize, Debug, Clone)]
 pub struct StarkProofWithPublicInputs<
     F: RichField + Extendable<D>,
     C: GenericConfig<D, F = F>,
@@ -247,7 +249,7 @@ pub struct MultiProofChallenges<F: RichField + Extendable<D>, const D: usize, co
 }
 
 /// Purported values of each polynomial at the challenge point.
-#[derive(Debug, Clone)]
+#[derive(Serialize, Debug, Clone)]
 pub struct StarkOpeningSet<F: RichField + Extendable<D>, const D: usize> {
     /// Openings of trace polynomials at `zeta`.
     pub local_values: Vec<F::Extension>,
