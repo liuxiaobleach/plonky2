@@ -227,6 +227,8 @@ mod tests {
         // Test first STARK
         let stark = S::new(num_rows);
         let trace = stark.generate_trace(public_inputs[0], public_inputs[1]);
+
+        let start_time = std::time::Instant::now();
         let proof = prove::<F, C, S, D>(
             stark,
             &config,
@@ -234,7 +236,14 @@ mod tests {
             &public_inputs,
             &mut TimingTree::default(),
         )?;
+        let duration_ms = start_time.elapsed().as_millis();
+        println!("starky proved in {}ms", duration_ms);
+        println!("starky proof size: {} bytes", bincode::serialize(&proof).unwrap().len());
+
+        let start_time_verify = std::time::Instant::now();
         verify_stark_proof(stark, proof.clone(), &config)?;
+        let duration_ms_verify = start_time_verify.elapsed().as_millis();
+        println!("starky verify in {}ms", duration_ms_verify);
 
         recursive_proof::<F, C, S, C, D>(stark, proof, &config, true)
     }
@@ -269,8 +278,16 @@ mod tests {
         }
 
         let data = builder.build::<C>();
+        let start_time = std::time::Instant::now();
         let proof = data.prove(pw)?;
-        data.verify(proof)
+        let duration_ms = start_time.elapsed().as_millis();
+        println!("recursion proved in {}ms", duration_ms);
+        println!("recursion proof size: {} bytes", bincode::serialize(&proof).unwrap().len());
+        let start_time_verify = std::time::Instant::now();
+        let _ = data.verify(proof);
+        let duration_ms_verify = start_time_verify.elapsed().as_millis();
+        println!("recursion verify in {}ms", duration_ms_verify);
+        Ok(())
     }
 
     fn init_logger() {

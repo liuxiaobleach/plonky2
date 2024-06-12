@@ -113,7 +113,7 @@ impl CircuitConfig {
                 cap_height: 4,
                 proof_of_work_bits: 16,
                 reduction_strategy: FriReductionStrategy::ConstantArityBits(4, 5),
-                num_query_rounds: 28,
+                num_query_rounds: 100,
             },
         }
     }
