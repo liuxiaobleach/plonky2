@@ -167,7 +167,7 @@ mod tests {
         type S = FibonacciStark<F, D>;
 
         let config = StarkConfig::standard_fast_config();
-        let num_rows = 1 << 5;
+        let num_rows = 1 << 6;
         let public_inputs = [F::ZERO, F::ONE, fibonacci(num_rows - 1, F::ZERO, F::ONE)];
 
         let stark = S::new(num_rows);
@@ -207,7 +207,7 @@ mod tests {
         type F = <C as GenericConfig<D>>::F;
         type S = FibonacciStark<F, D>;
 
-        let num_rows = 1 << 5;
+        let num_rows = 1 << 6;
         let stark = S::new(num_rows);
         test_stark_circuit_constraints::<F, C, S, D>(stark)
     }
@@ -221,7 +221,7 @@ mod tests {
         type S = FibonacciStark<F, D>;
 
         let config = StarkConfig::standard_fast_config();
-        let num_rows = 1 << 5;
+        let num_rows = 1 << 6;
         let public_inputs = [F::ZERO, F::ONE, fibonacci(num_rows - 1, F::ZERO, F::ONE)];
 
         // Test first STARK
